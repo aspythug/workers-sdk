@@ -9,10 +9,11 @@ import open from "open";
 import { useEffect, useRef, useState } from "react";
 import { SourceMapConsumer } from "source-map";
 import WebSocket, { WebSocketServer } from "ws";
-import { version } from "../package.json";
-import { logger } from "./logger";
+import { version } from "../../package.json";
+import { logger } from "../logger";
+import { getAccessToken } from "../user/access";
 import { waitForPortToBeAvailable } from "./proxy";
-import { getAccessToken } from "./user/access";
+import type { SourceMapMetadata } from "../deployment-bundle/bundle";
 import type Protocol from "devtools-protocol";
 import type { IncomingMessage, Server, ServerResponse } from "node:http";
 import type { MessageEvent } from "ws";
@@ -34,19 +35,10 @@ import type { MessageEvent } from "ws";
  * and exceptions)
  */
 
-/**
- * TODO:
- * - clear devtools whenever we save changes to the worker
- * - clear devtools when we switch between local/remote modes
- * - handle more methods from console
- */
-
-// Information about Wrangler's bundling process that needs passsed through
-// for DevTools sourcemap transformation
-export interface SourceMapMetadata {
-	tmpDir: string;
-	entryDirectory: string;
-}
+// TODO:
+// - clear devtools whenever we save changes to the worker
+// - clear devtools when we switch between local/remote modes
+// - handle more methods from console
 
 interface InspectorProps {
 	/**
@@ -677,14 +669,13 @@ function randomId(): string {
 }
 
 /**
- * This function converts a message serialised as a devtools event
+ * This function converts a message serialized as a devtools event
  * into arguments suitable to be called by a console method, and
  * then actually calls the method with those arguments. Effectively,
  * we're just doing a little bit of the work of the devtools console,
  * directly in the terminal.
  */
-
-export const mapConsoleAPIMessageTypeToConsoleMethod: {
+const mapConsoleAPIMessageTypeToConsoleMethod: {
 	[key in Protocol.Runtime.ConsoleAPICalledEvent["type"]]: Exclude<
 		keyof Console,
 		"Console"

@@ -17,9 +17,9 @@ import {
 	stopWorkerRegistry,
 	unregisterWorker,
 } from "../dev-registry";
-import { openInspector } from "../inspect";
 import { logger } from "../logger";
 import openInBrowser from "../open-in-browser";
+import { openInspector } from "./inspect";
 import { Local } from "./local";
 import { Remote } from "./remote";
 import { useEsbuild } from "./use-esbuild";
