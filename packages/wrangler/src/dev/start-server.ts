@@ -3,7 +3,8 @@ import * as util from "node:util";
 import chalk from "chalk";
 import onExit from "signal-exit";
 import tmp from "tmp-promise";
-import { bundleWorker, dedupeModulesByName } from "../deployment-bundle/bundle";
+import { bundleWorker } from "../deployment-bundle/bundle";
+import { dedupeModulesByName } from "../deployment-bundle/dedupe-modules";
 import { runCustomBuild } from "../deployment-bundle/run-custom-build";
 import traverseModuleGraph from "../deployment-bundle/traverse-module-graph";
 import {
@@ -246,11 +247,9 @@ async function runEsbuild({
 			nodejsCompat,
 			define,
 			checkFetch: true,
-			assets: assets && {
-				...assets,
-				// disable the cache in dev
-				bypassCache: true,
-			},
+			assets,
+			// disable the cache in dev
+			bypassAssetCache: true,
 			workerDefinitions,
 			services,
 			targetConsumer: "dev", // We are starting a dev server
