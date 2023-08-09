@@ -1,6 +1,7 @@
 import { access, lstat } from "node:fs/promises";
 import { relative, resolve } from "node:path";
 import { bundleWorker } from "../../deployment-bundle/bundle";
+import { noopModuleCollector } from "../../deployment-bundle/module-collection";
 import { getBasePath } from "../../paths";
 import { buildNotifierPlugin } from "./buildWorker";
 import type { Options as WorkerOptions } from "./buildWorker";
@@ -30,6 +31,10 @@ export function buildPluginFromFunctions({
 		},
 		resolve(outdir),
 		{
+			bundle: true,
+			findAdditionalModules: false,
+			additionalModules: [],
+			moduleCollector: noopModuleCollector,
 			inject: [routesModule],
 			entryName: "index",
 			minify,
@@ -97,7 +102,6 @@ export function buildPluginFromFunctions({
 				},
 			],
 			serveAssetsFromWorker: false,
-			disableModuleCollection: false,
 			rules: [],
 			checkFetch: local,
 			targetConsumer: local ? "dev" : "deploy",
