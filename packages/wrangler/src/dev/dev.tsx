@@ -117,6 +117,7 @@ function useDevRegistry(
 export type DevProps = {
 	name: string | undefined;
 	noBundle: boolean;
+	findAdditionalModules: boolean | undefined;
 	entry: Entry;
 	initialPort: number;
 	initialIp: string;
@@ -272,6 +273,7 @@ function DevSession(props: DevSessionProps) {
 		nodejsCompat: props.nodejsCompat,
 		define: props.define,
 		noBundle: props.noBundle,
+		findAdditionalModules: props.findAdditionalModules,
 		assets: props.assetsConfig,
 		workerDefinitions,
 		services: props.bindings.services,

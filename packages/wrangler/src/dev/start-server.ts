@@ -6,7 +6,7 @@ import tmp from "tmp-promise";
 import { bundleWorker } from "../deployment-bundle/bundle";
 import { getBundleType } from "../deployment-bundle/bundle-type";
 import { dedupeModulesByName } from "../deployment-bundle/dedupe-modules";
-import findAdditionalModules from "../deployment-bundle/find-additional-modules";
+import { findAdditionalModules as doFindAdditionalModules } from "../deployment-bundle/find-additional-modules";
 import {
 	createModuleCollector,
 	getWrangler1xLegacyModuleReferences,
@@ -97,6 +97,7 @@ export async function startDevServer(
 		nodejsCompat: props.nodejsCompat,
 		define: props.define,
 		noBundle: props.noBundle,
+		findAdditionalModules: props.findAdditionalModules,
 		assets: props.assetsConfig,
 		workerDefinitions,
 		services: props.bindings.services,
@@ -203,6 +204,7 @@ async function runEsbuild({
 	nodejsCompat,
 	define,
 	noBundle,
+	findAdditionalModules,
 	workerDefinitions,
 	services,
 	testScheduled,
@@ -224,6 +226,7 @@ async function runEsbuild({
 	legacyNodeCompat: boolean | undefined;
 	nodejsCompat: boolean | undefined;
 	noBundle: boolean;
+	findAdditionalModules: boolean | undefined;
 	workerDefinitions: WorkerRegistry;
 	testScheduled?: boolean;
 	local: boolean;
@@ -233,7 +236,7 @@ async function runEsbuild({
 
 	if (noBundle) {
 		additionalModules = dedupeModulesByName([
-			...((await findAdditionalModules(entry, rules)) ?? []),
+			...((await doFindAdditionalModules(entry, rules)) ?? []),
 			...additionalModules,
 		]);
 	}
@@ -246,7 +249,8 @@ async function runEsbuild({
 					entryDirectory,
 					entry.file
 				),
-				format: entry.format,
+				entry,
+				findAdditionalModules: findAdditionalModules ?? false,
 				rules,
 		  });
 
@@ -254,13 +258,11 @@ async function runEsbuild({
 		processEntrypoint || !noBundle
 			? await bundleWorker(entry, destination, {
 					bundle: !noBundle,
-					findAdditionalModules: false,
 					additionalModules,
 					moduleCollector,
 					serveAssetsFromWorker,
 					jsxFactory,
 					jsxFragment,
-					rules,
 					tsconfig,
 					minify,
 					legacyNodeCompat,

@@ -32,7 +32,6 @@ export function buildPluginFromFunctions({
 		resolve(outdir),
 		{
 			bundle: true,
-			findAdditionalModules: false,
 			additionalModules: [],
 			moduleCollector: noopModuleCollector,
 			inject: [routesModule],
@@ -102,7 +101,6 @@ export function buildPluginFromFunctions({
 				},
 			],
 			serveAssetsFromWorker: false,
-			rules: [],
 			checkFetch: local,
 			targetConsumer: local ? "dev" : "deploy",
 			forPages: true,
