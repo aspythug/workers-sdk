@@ -256,7 +256,7 @@ export async function traverseAndBuildWorkerJSDirectory({
 }): Promise<BundleResult> {
 	const entrypoint = resolve(join(workerJSDirectory, "index.js"));
 
-	const traverseModuleGraphResult = await findAdditionalModules(
+	const additionalModules = await findAdditionalModules(
 		{
 			file: entrypoint,
 			directory: resolve(workerJSDirectory),
@@ -275,9 +275,7 @@ export async function traverseAndBuildWorkerJSDirectory({
 	const bundleResult = await buildRawWorker({
 		workerScriptPath: entrypoint,
 		bundle: true,
-		external: traverseModuleGraphResult.modules.map((m) =>
-			join(workerJSDirectory, m.name)
-		),
+		external: additionalModules.map((m) => join(workerJSDirectory, m.name)),
 		outfile,
 		directory: buildOutputDirectory,
 		local: false,
@@ -285,7 +283,7 @@ export async function traverseAndBuildWorkerJSDirectory({
 		watch: false,
 		onEnd: () => {},
 		nodejsCompat,
-		additionalModules: traverseModuleGraphResult.modules,
+		additionalModules,
 	});
 
 	return {
