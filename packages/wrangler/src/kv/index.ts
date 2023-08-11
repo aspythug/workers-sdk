@@ -180,7 +180,7 @@ export const kvKey = (kvYargs: CommonYargsArgv) => {
 	return kvYargs
 		.command(
 			"put <key> [value]",
-			"Writes a single key/value pair to the given namespace.",
+			"🔹Write a single key/value pair to the given namespace",
 			(yargs) => {
 				return yargs
 					.positional("key", {
@@ -301,7 +301,7 @@ export const kvKey = (kvYargs: CommonYargsArgv) => {
 		)
 		.command(
 			"list",
-			"Outputs a list of all keys in a given namespace.",
+			"🔹Output a list of all keys in a given namespace",
 			(yargs) => {
 				return yargs
 					.option("binding", {
@@ -370,7 +370,7 @@ export const kvKey = (kvYargs: CommonYargsArgv) => {
 		)
 		.command(
 			"get <key>",
-			"Reads a single value by key from the given namespace.",
+			"🔹Read a single value by key from the given namespace",
 			(yargs) => {
 				return yargs
 					.positional("key", {
@@ -457,7 +457,7 @@ export const kvKey = (kvYargs: CommonYargsArgv) => {
 		)
 		.command(
 			"delete <key>",
-			"Removes a single key value pair from the given namespace.",
+			"🔹Remove a single key value pair from the given namespace",
 			(yargs) => {
 				return yargs
 					.positional("key", {
