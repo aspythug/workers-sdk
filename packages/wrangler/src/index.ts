@@ -437,6 +437,13 @@ export function createCLIParser(argv: string[]) {
 		}
 	);
 
+  wrangler.command(
+		"secret:bulk [json]",
+		"🔸Bulk upload secrets for a Worker",
+		secretBulkOptions,
+		secretBulkHandler
+	);
+
   // type generation
 	wrangler.command(
 		"types",
@@ -703,13 +710,6 @@ export function createCLIParser(argv: string[]) {
 		// "👷 Create or change your workers.dev subdomain.",
 		subdomainOptions,
 		subdomainHandler
-	);
-
-	wrangler.command(
-		"secret:bulk [json]",
-		"🔸Bulk upload secrets for a Worker",
-		secretBulkOptions,
-		secretBulkHandler
 	);
 
 	// This set to false to allow overwrite of default behaviour
