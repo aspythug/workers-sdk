@@ -308,7 +308,7 @@ export function createCLIParser(argv: string[]) {
 	// init
 	wrangler.command(
 		"init [name]",
-		"🔸Innitialize a basic worker application",
+		"🔸Initialize a basic worker application",
 		initOptions,
 		initHandler
 	);
