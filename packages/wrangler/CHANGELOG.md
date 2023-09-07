@@ -1,5 +1,11 @@
 # wrangler
 
+## 3.7.1
+
+### Patch Changes
+
+- [#3901](https://github.com/cloudflare/workers-sdk/pull/3901) [`a986f19f`](https://github.com/cloudflare/workers-sdk/commit/a986f19f2d7989639524f9fd73761ea69aef4f6b) Thanks [@DaniFoldi](https://github.com/DaniFoldi)! - Only require preview_id and preview_bucket_name in remote dev mode
+
 ## 3.7.0
 
 ### Minor Changes
